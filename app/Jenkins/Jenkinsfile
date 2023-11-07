@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo '====start building image===='
-                dir('Docker') {
+                dir('app/Docker') {
                     sh 'docker build -t app .'
                 }
             }
