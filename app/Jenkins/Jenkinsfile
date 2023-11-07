@@ -13,9 +13,16 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo 'start building image'
-                dir('docker') {
-                    sh 'docker build -t app .'
+                /* groovylint-disable-next-line NoDef, VariableTypeRequired */
+                def changes = sh(returnStdout: true, script: 'git status --short')
+
+                /* groovylint-disable-next-line UnnecessaryGetter */
+                if (changes.trim().isEmpty()) {
+                    echo 'start building image'
+                    /* groovylint-disable-next-line NestedBlockDepth */
+                    dir('docker') {
+                        sh 'docker build -t app .'
+                    }
                 }
             }
         }
