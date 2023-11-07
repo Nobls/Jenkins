@@ -1,3 +1,4 @@
+/* groovylint-disable-next-line CompileStatic */
 pipeline {
     agent any
 
@@ -6,23 +7,11 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/Nobls/Jenkins.git'
-            }
-        }
         stage('Build') {
             steps {
-                /* groovylint-disable-next-line NoDef, VariableTypeRequired */
-                def changes = sh(returnStdout: true, script: 'git status --short')
-
-                /* groovylint-disable-next-line UnnecessaryGetter */
-                if (changes.trim().isEmpty()) {
-                    echo 'start building image'
-                    /* groovylint-disable-next-line NestedBlockDepth */
-                    dir('docker') {
-                        sh 'docker build -t app .'
-                    }
+                echo 'start building image'
+                dir('docker') {
+                    sh 'docker build -t app .'
                 }
             }
         }
