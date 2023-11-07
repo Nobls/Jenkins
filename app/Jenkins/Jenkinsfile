@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/Nobls/Jenkins.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'start building image'
+                dir('docker') {
+                    sh 'docker build -t app .'
+                }
+            }
+        }
+    }
+}
