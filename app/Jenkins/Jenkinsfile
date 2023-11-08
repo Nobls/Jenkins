@@ -21,7 +21,7 @@ pipeline {
             }
             steps {
                 echo '====start creating backup===='
-                sshagent(credentials: ['user']) {
+                sshagent(credentials: ['af51f9be-ee55-41a0-862f-0e84c80c635a']) {
                     sh 'scp app-artifact.jar user@user:/path/to/backup-directory'
                 }
                 echo '====backup completed===='
