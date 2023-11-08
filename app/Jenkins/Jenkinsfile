@@ -16,4 +16,38 @@ pipeline {
             }
         }
     }
+
+    stage('Backup') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                echo '====start creating backup===='
+                sshagent(credentials: ['af51f9be-ee55-41a0-862f-0e84c80c635a']) {
+                    sh 'scp app-artifact.jar user@user:/path/to/backup-directory'
+                }
+                echo '====backup completed===='
+            }
+        }
 }
+
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+    }
+
+    stages {
+        stage('Deploy') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                echo '====start deploying application===='
+                sh 'docker run -d -p 3000:3000 app'
+            }
+        }
+    }
+}
+
