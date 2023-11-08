@@ -16,6 +16,20 @@ pipeline {
             }
         }
 
+        stage('Backup') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                script {
+                    def workspace = env.WORKSPACE
+                    def backupDirectory = '/path/to/backup-directory'
+                    sh "cp ${workspace}/app-artifact.jar ${backupDirectory}"
+                }
+                echo '====backup completed===='
+            }
+        }
+
         stage('Deploy') {
             when {
                 expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
