@@ -15,9 +15,7 @@ pipeline {
                 }
             }
         }
-    }
-
-    stage('Backup') {
+        stage('Backup') {
             when {
                 expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
             }
@@ -29,6 +27,7 @@ pipeline {
                 echo '====backup completed===='
             }
         }
+    }
 }
 
 pipeline {
