@@ -22,6 +22,9 @@ pipeline {
             }
             steps {
                 echo '====start creating backup===='
+                script {
+                    sh 'mkdir -p /path/to/backup-directory'
+                }
                 sh 'docker save app -o /path/to/backup-directory/app-artifact.tar'
                 echo '====backup completed===='
             }
