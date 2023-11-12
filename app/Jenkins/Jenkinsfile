@@ -21,11 +21,8 @@ pipeline {
                 expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
             }
             steps {
-                script {
-                    def workspace = env.WORKSPACE
-                    def backupDirectory = '/path/to/backup-directory'
-                    sh "cp ${workspace}/app-artifact.jar ${backupDirectory}"
-                }
+                echo '====start creating backup===='
+                sh 'docker save app -o /path/to/backup-directory/app-artifact.tar'
                 echo '====backup completed===='
             }
         }
