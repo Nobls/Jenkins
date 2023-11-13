@@ -1,3 +1,4 @@
+# Используем Node.js 18.4
 FROM node:18.4
 
 # Создаем рабочую директорию
@@ -6,12 +7,15 @@ WORKDIR /app
 # Копируем исходный код в рабочую директорию
 COPY . .
 
-# Устанавливаем зависимости
-RUN npm install
+# Устанавливаем yarn (если его нет)
+RUN npm install -g yarn
+
+# Устанавливаем зависимости с использованием yarn
+RUN yarn install
 
 # Собираем приложение
-RUN npm run build
+RUN yarn build
 
 # Запускаем приложение
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start"]
