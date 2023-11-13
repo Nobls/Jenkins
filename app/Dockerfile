@@ -7,9 +7,6 @@ WORKDIR /app
 # Копируем исходный код в рабочую директорию
 COPY . .
 
-# Устанавливаем yarn (если его нет)
-RUN npm install -g yarn
-
 # Устанавливаем зависимости с использованием yarn
 RUN yarn install
 
