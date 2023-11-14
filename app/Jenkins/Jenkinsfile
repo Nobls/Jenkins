@@ -1,0 +1,43 @@
+/* groovylint-disable-next-line CompileStatic */
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                echo '====start building image===='
+                dir('app') {
+                    sh 'docker build -t app .'
+                }
+            }
+        }
+
+        stage('Backup') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                echo '====start creating backup===='
+                script {
+                   sh 'mkdir -p /var/lib/jenkins/workspace/Staging/backup-directory'
+                }
+                sh 'docker save app -o /var/lib/jenkins/workspace/Staging/backup-directory/app-artifact.tar'
+                echo '====backup completed===='
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                echo '====start deploying application===='
+                sh 'docker run -d -p 3000:3000 app'
+            }
+        }
+    }
+}
