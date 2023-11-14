@@ -36,7 +36,7 @@ pipeline {
             }
             steps {
                 echo '====start deploying Production application===='
-                sh 'docker run -d -p 3000:4000 production-app'
+                sh 'docker run -d -p 4000:4000 production-app'
             }
         }
     }
